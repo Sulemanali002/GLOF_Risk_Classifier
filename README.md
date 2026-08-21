@@ -40,23 +40,26 @@ Key Finding
 Geospatial location (Lat_lake, Lon_lake) and the Driver of GLOF (ice avalanche, heavy rainfall, earthquake) are the strongest predictors of fatality severity. Summer events consistently show higher fatality rates — corresponding to peak glacier melt season in Gilgit-Baltistan.
 
 Charts
+<img width="684" height="542" alt="GLOF Event Locations in Pakistan&#39;" src="https://github.com/user-attachments/assets/570b693c-6e68-43d1-9193-3811b80fc34b" />
+GLOF Event Locations in Pakistan — Ghanche District Highlighted
 
-### GLOF Event Locations in Pakistan — Ghanche District Highlighted
-![GLOF Map](glof_map.png)
+GLOF Events Over Time (1900-2025)
+![GLOF Timeline]<img width="1112" height="457" alt="Glof Events Per Year (1900_2025)" src="https://github.com/user-attachments/assets/f63f8368-7fc2-4dfd-b990-b6411cc77d61" />
 
-### GLOF Events Over Time (1900-2025)
-![GLOF Timeline](glof_timeline.png)
 
-### What Causes GLOFs?
-![GLOF Causes](glof_causes.png)
+What Causes GLOFs?
+![GLOF Causes]
+(<img width="681" height="452" alt="Main Causes of Glof Events" src="https://github.com/user-attachments/assets/976e18c8-7439-48aa-94f3-955b30da5945" />)
 
-### Feature Importance — What Predicts Fatality?
-![Feature Importance](feature_importance.png)
+Feature Importance — What Predicts Fatality?
+![Feature Importance]<img width="921" height="483" alt="What Predicts GLOF Fatality" src="https://github.com/user-attachments/assets/dbb6b44a-9e55-4957-b2b7-53faee88a386" />
 
-### Model Comparison
-![Model Comparison](model_comparison.png)
 
-## Tools Used
+ Model Comparison
+![Model Comparison]<img width="661" height="382" alt="Model Comparison Random Forest Vs Gradient Boosting Vs Decision Tree" src="https://github.com/user-attachments/assets/27c19640-a627-489b-affa-13f05449763e" />
+
+
+Tools Used
 
 - Python
 - pandas
