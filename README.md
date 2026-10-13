@@ -26,37 +26,37 @@ HMAGLOFDB, a database of historical GLOF events in High Mountain Asia: 703 event
 ### How much information is missing?
 Many fields are mostly empty, which limits what any model can learn. Month is about 64% missing and the trigger is unknown for 123 of 137 events.
 
-![Missing data](figures/missing_data.png)
+![Missing data](missing_data.png)
 
 ### When did events happen?
-![Events per decade](figures/events_per_decade.png)
+![Events per decade](events_per_decade.png)
 
 The 2020 bar is low because that decade is not finished.
 
 ### Which months?
 Only 49 of 137 events have a known month. Of those, 32 happened in May to July.
 
-![Events by month](figures/events_by_month.png)
+![Events by month](events_by_month.png)
 
 ### Lake types and triggers
 Ice-dammed lakes are the largest group (76 events). The trigger is unknown for most events, so conclusions about causes are not possible.
 
-![Lake type and driver](figures/lake_type_and_driver.png)
+![Lake type and driver](lake_type_and_driver.png)
 
 ### Which impacts were recorded?
 Damage to infrastructure, buildings and farmland is recorded far more often than deaths.
 
-![Impact types](figures/impact_types.png)
+![Impact types](impact_types.png)
 
 ### Where are the events?
 The dashed box is a rough study area around Ghanche (not the exact district border). It contains 3 recorded outbursts (1990, 1993, 2000) from the same lake in the Hushe basin, so they appear as a single point.
 
-![Event map](figures/event_map.png)
+![Event map](event_map.png)
 
 ### Did recorded impact change over time?
 The share of events with a recorded impact differs strongly between periods (about 35% before 1950, 64% in 1950-79, about 44% after 1980). This points to differences in documentation, not only in danger.
 
-![Impact by period](figures/impact_by_period.png)
+![Impact by period](impact_by_period.png)
 
 ## Results
 
@@ -68,24 +68,24 @@ The share of events with a recorded impact differs strongly between periods (abo
 | Logistic Regression | 59.9% |
 | Majority-class baseline | 55.5% |
 
-![Model comparison](figures/model_comparison.png)
+![Model comparison](model_comparison.png)
 
 Tree-based models beat the baseline by about 14 points. Logistic Regression barely beats it. Differences of one or two points between models are within noise at this sample size.
 
 ### Where the best model goes wrong
 Gradient Boosting correctly flags 36 of 61 events with recorded impact (recall 0.59) and 60 of 76 events without (recall 0.79).
 
-![Confusion matrix](figures/confusion_matrix.png)
+![Confusion matrix](confusion_matrix.png)
 
 ### One train/test split can mislead
 Over 200 random 80/20 splits, Gradient Boosting scored between 50.0% and 89.3% (mean 69.5%). Only 4.0% of splits reached 85.7%. Cross-validated results are reported instead of a single split.
 
-![Split instability](figures/split_instability.png)
+![Split instability](split_instability.png)
 
 ### What is the model using?
 Using location alone gives about 65 to 67%, so most of the skill comes from where events were recorded. The trigger adds nothing.
 
-![Feature ablation](figures/feature_ablation.png)
+![Feature ablation](feature_ablation.png)
 
 ## Limitations
 
@@ -106,7 +106,7 @@ Using location alone gives about 65 to 67%, so most of the skill comes from wher
 
 1. Put `glof.ipynb` and `HMAGLOFDB.csv` in the same folder. If the CSV is not included in this repository, download it from the Zenodo link above.
 2. Open the notebook in Jupyter and choose Restart and Run All.
-3. Charts are saved in the `figures/` folder.
+3. When you run the notebook, it saves the charts in a `figures/` folder next to it. The copies shown in this README are the PNG files in the repository root.
 
 Requires Python 3 with pandas, numpy, matplotlib and scikit-learn.
 
