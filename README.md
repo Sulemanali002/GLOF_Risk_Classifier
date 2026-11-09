@@ -1,46 +1,115 @@
-GLOF Impact Classifier: Gilgit-Baltistan, Pakistan
+GLOF Risk Analysis: Gilgit-Baltistan, Pakistan
 
-A small machine learning project that classifies whether a recorded Glacial Lake Outburst Flood (GLOF) event in Gilgit-Baltistan had any recorded impact.
+Can basic information about a glacier lake outburst flood (GLOF) event, namely where it happened, when, lake type and trigger, predict whether the event had any recorded impact? This project explores that question for Gilgit-Baltistan using the HMAGLOFDB database.
 
-About this project
-
-I am from Gilgit-Baltistan, a mountain region where GLOFs are a real danger for villages. I built this project to learn applied machine learning on a topic close to home. It is a learning project, not a hazard prediction tool.
+The honest answer: only modestly. The best model reaches about 70% accuracy against a 56.9% baseline, and most of that skill comes from location and year, which likely reflects where and when events were documented, not a physical hazard model.
 
 Data
-Source: High Mountain Asia GLOF Database (HMAGLOFDB), included here as HMAGLOFDB.csv
-Used: 137 recorded GLOF events in Gilgit-Baltistan
-Target: whether the event has any recorded impact (yes or no)
+
+HMAGLOFDB, a database of historical GLOF events in High Mountain Asia: 703 events in the file used here, 137 of them in Gilgit-Baltistan.
+
+Target: AnyImpact = 1 if the database records any impact for the event (lives, injuries, displacement, livestock, buildings, infrastructure, farmland, economic damage), otherwise 0. 59 of 137 events (43%) have a recorded impact. The database column called Impact holds distances in km, not damage, so it is not used to build the target.
+
+Important: 0 means "no impact recorded", not "no impact happened".
+
+Data credit: Shrestha, F., Steiner, J. F., Shrestha, R., Dhungel, Y., Joshi, S. P., Inglis, S., Ashraf, A., Wali, S., Walizada, K. M., Zhang, T. (2023). A comprehensive and version-controlled database of glacial lake outburst floods in High Mountain Asia. Earth System Science Data, 15, 3941-3961. https://doi.org/10.5194/essd-15-3941-2023. Database: https://doi.org/10.5281/zenodo.7271187
+
 Method
-Filtered the database to Gilgit-Baltistan
-Built the yes/no impact label from the recorded impact columns
-Encoded categorical features
-Trained four models: Gradient Boosting, Random Forest, Decision Tree and Logistic Regression
-Used leave-one-out cross-validation, because the dataset is small
-Compared every model with a baseline that always predicts the most common class
+Features: lake type, GLOF trigger (driver), year, latitude, longitude. Month was dropped (about 64% missing).
+Four models: Random Forest, Gradient Boosting, Decision Tree, Logistic Regression.
+Evaluation: Leave-One-Out cross-validation (the scaler is refit inside every fold), compared with a majority-class baseline.
+Robustness checks: 200 random train/test splits and feature-removal tests.
+What the data looks like
+How much information is missing?
+
+Many fields are mostly empty, which limits what any model can learn. Month is about 64% missing and the trigger is unknown for 123 of 137 events.
+
+Missing data
+
+When did events happen?
+
+Events per decade
+
+The 2020 bar is low because that decade is not finished.
+
+Which months?
+
+Only 49 of 137 events have a known month. Of those, 32 happened in May to July.
+
+Events by month
+
+Lake types and triggers
+
+Ice-dammed lakes are the largest group (76 events). The trigger is unknown for most events, so conclusions about causes are not possible.
+
+Lake type and driver
+
+Which impacts were recorded?
+
+Damage to infrastructure, buildings and farmland is recorded far more often than deaths.
+
+Impact types
+
+Where are the events?
+
+The dashed box is a rough study area around Ghanche (not the exact district border). It contains 3 recorded outbursts (1990, 1993, 2000) from the same lake in the Hushe basin, so they appear as a single point.
+
+Event map
+
+Did recorded impact change over time?
+
+The share of events with a recorded impact differs strongly between periods (about 36% before 1950, 64% in 1950-79, 39% in 1980-99 and 43% from 2000). This points to differences in documentation, not only in danger.
+
+Impact by period
+
 Results
-Model	Accuracy (leave-one-out CV)
+Model	LOOCV accuracy
 Gradient Boosting	70.1%
-Random Forest	69.3%
-Decision Tree	69.3%
-Logistic Regression	59.9%
-Baseline (most common class)	55.5%
-Important limitation
+Random Forest	68.6%
+Decision Tree	67.9%
+Logistic Regression	58.4%
+Majority-class baseline	56.9%
 
-Most of the models' skill comes from location and year. This means the models mostly learn where and when events were documented, not the physical hazard of a lake. The results show that the models beat the baseline by about 15 points. They do not show that the models can predict real flood risk.
+Model comparison
 
-Charts
-Event locations: event_map.png
-Events per year: events_per_decade.png
-Main causes: lake_type_and_driver.png
-Feature importance: feature_ablation.png. You don’t have a classic feature-importance chart, but the feature-removal test shows the same thing, and it’s more honest for this data.
-Model comparison: model_comparison.png. The baseline is already drawn as the dashed grey line, so “add the baseline” is done.
+Tree-based models beat the baseline by about 11 to 13 points. Logistic Regression beats it by only about 1.5 points. Differences of one or two points between models are within noise at this sample size.
 
+Where the best model goes wrong
 
-Tools
+Gradient Boosting correctly flags 35 of 59 events with recorded impact (recall 0.59) and 61 of 78 events without (recall 0.78).
 
-Python, pandas, scikit-learn, matplotlib, seaborn, Jupyter Notebook
+Confusion matrix
 
-Next steps
-Add physical lake data from satellite imagery (lake area and change over time)
-Test on a spatial split, so test events are in different places from training events
-Try this on more regions of High Mountain Asia
+One train/test split can mislead
+
+Over 200 random 80/20 splits, Gradient Boosting scored between 50.0% and 89.3% (mean 69.1%). Only 2.0% of splits reached 85.7%. Cross-validated results are reported instead of a single split.
+
+Split instability
+
+What is the model using?
+
+Using location alone gives about 65% (65.7% with Random Forest, 65.0% with Gradient Boosting), which is most of the way to the full model (68.6% and 70.1%). Adding year gives 67.2% and 70.8%. Removing the trigger changes nothing (67.9% and 70.1%). Removing year lowers Gradient Boosting from 70.1% to 67.2%.
+
+Feature ablation
+
+Limitations
+Small dataset (137 events). Results can change a lot with a few events. Even the Gradient Boosting score can move by about one event (0.7 points) between scikit-learn versions: a rerun in a different environment gave 69.3% instead of 70.1%.
+"No impact recorded" does not always mean no impact happened. Records are biased toward places and periods that were documented.
+Most of the skill comes from location and year. This is consistent with the models learning mostly where and when events were documented, but location also tracks real physical differences, so this cannot be proven here. This is not a physical model of GLOF hazard.
+The trigger is unknown for most events and cannot be studied properly.
+Lake type and trigger are encoded with simple label encoding, which suits tree models more than Logistic Regression.
+The Ghanche study box contains only one lake with 3 recorded outbursts. Nothing here predicts risk for a specific village.
+Possible next steps
+Add physical data (glacier area, lake area, slope, temperature) from other sources.
+Use a larger regional dataset and validate across regions.
+Predict impact severity once more records are available.
+How to run
+Put glof.ipynb and HMAGLOFDB.csv in the same folder. If the CSV is not included in this repository, download it from the Zenodo link above.
+Open the notebook in Jupyter and choose Restart and Run All.
+When you run the notebook, it saves the charts in a figures/ folder next to it. The copies shown in this README are the PNG files in the repository root.
+
+Requires Python 3 with pandas, numpy, matplotlib and scikit-learn.
+
+Author
+
+Suleman Ali, BS Computer Science, University of Baltistan, Skardu.
