@@ -29,8 +29,12 @@ Important limitation
 Most of the models' skill comes from location and year. This means the models mostly learn where and when events were documented, not the physical hazard of a lake. The results show that the models beat the baseline by about 15 points. They do not show that the models can predict real flood risk.
 
 Charts
+Event locations: event_map.png
+Events per year: events_per_decade.png
+Main causes: lake_type_and_driver.png
+Feature importance: feature_ablation.png. You don’t have a classic feature-importance chart, but the feature-removal test shows the same thing, and it’s more honest for this data.
+Model comparison: model_comparison.png. The baseline is already drawn as the dashed grey line, so “add the baseline” is done.
 
-(Keep your existing chart images here: event locations, events per year, main causes, feature importance, model comparison. Add the baseline to the model comparison chart if you can.)
 
 Tools
 
